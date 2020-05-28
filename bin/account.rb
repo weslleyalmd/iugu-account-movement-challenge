@@ -1,5 +1,7 @@
 class Account
 
+  NEGATIVE_BALANCE_FEE = 300 # R$ 3,00
+
   attr_accessor :id, :balance
 
   def initialize(id, balance)

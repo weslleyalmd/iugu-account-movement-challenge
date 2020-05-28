@@ -20,11 +20,13 @@ class Processor
   def process
     @transactions.each do |transaction|
       account = @accounts.find {|a| a.id == transaction.account_id}
+      current_balance = account.balance
 
       if transaction.type == "withdraw"
-        new_balance = subtract(account.balance, transaction.value)
+        new_balance = subtract(current_balance, transaction.value)
+        new_balance = subtract(new_balance, Account::NEGATIVE_BALANCE_FEE) if new_balance.negative?
       elsif transaction.type == "deposit"
-        new_balance = sum(account.balance, transaction.value)
+        new_balance = sum(current_balance, transaction.value)
       end
       
       account.balance = new_balance
