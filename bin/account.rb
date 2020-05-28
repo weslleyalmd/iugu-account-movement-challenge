@@ -4,6 +4,10 @@ class Account
 
   def initialize(id, balance)
     @id = id
-    @balance = balance
+    @balance = balance.to_i
+  end
+
+  def to_csv
+    "#{id},#{balance}\n"
   end
 end

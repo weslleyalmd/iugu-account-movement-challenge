@@ -11,6 +11,26 @@ class Processor
     @transactions = get_transactions(transactions_path)
   end
 
+  def run
+    process
+
+    puts @accounts.map {|a| a.to_csv}
+  end
+
+  def process
+    @transactions.each do |transaction|
+      account = @accounts.find {|a| a.id == transaction.account_id}
+
+      if transaction.type == "withdraw"
+        new_balance = subtract(account.balance, transaction.value)
+      elsif transaction.type == "deposit"
+        new_balance = sum(account.balance, transaction.value)
+      end
+      
+      account.balance = new_balance
+    end
+  end
+
   def read(file_path)
     if File.exists? file_path
       return CSV.read(file_path)
@@ -19,7 +39,7 @@ class Processor
       return nil
     end
   rescue
-    puts "Invalid CSV"
+    puts "Invalid CSV file format"
   end
 
   def get_accounts(file_path)
@@ -44,6 +64,16 @@ class Processor
     end
 
     transactions
+  end
+
+  private
+
+  def sum(a,b)
+    a + b
+  end
+
+  def subtract(a,b)
+    a - b
   end
 
 end
