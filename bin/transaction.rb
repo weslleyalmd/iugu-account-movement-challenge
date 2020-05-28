@@ -4,14 +4,14 @@ class Transaction
 
   def initialize(account_id, value)
     @account_id = account_id
-    @value = value
-    @type = set_type(value)
+    @value = value.to_i
+    @type = set_type
   end
 
   private
 
-  def set_type(value)
-    value.negative? ? "withdraw" : "deposit"
+  def set_type
+    @value.negative? ? "withdraw" : "deposit"
   end
 
 end
