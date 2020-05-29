@@ -9,15 +9,21 @@ class Processor
   def initialize(accounts_path, transactions_path)
     @accounts = get_accounts(accounts_path)
     @transactions = get_transactions(transactions_path)
+  rescue StandardError => e
+    return e.message
   end
 
   def run
-    process
+    process_transactions
 
-    puts @accounts.map {|a| a.to_csv}
+    @accounts.map {|a| a.to_csv}
+  rescue StandardError => e
+    return e.message
   end
 
-  def process
+  def process_transactions
+    raise StandardError.new "Invalid data" if !@accounts && !@transactions
+
     @transactions.each do |transaction|
       account = @accounts.find {|a| a.id == transaction.account_id}
       current_balance = account.balance
@@ -33,15 +39,22 @@ class Processor
     end
   end
 
+  private
+
+  def sum(a,b)
+    a + b
+  end
+
+  def subtract(a,b)
+    a - b
+  end
+
   def read(file_path)
     if File.exists? file_path
       return CSV.read(file_path)
     else
-      puts "The file path is invalid"
-      return nil
+      raise StandardError.new "The file path is invalid"
     end
-  rescue
-    puts "Invalid CSV file format"
   end
 
   def get_accounts(file_path)
@@ -66,16 +79,6 @@ class Processor
     end
 
     transactions
-  end
-
-  private
-
-  def sum(a,b)
-    a + b
-  end
-
-  def subtract(a,b)
-    a - b
   end
 
 end
