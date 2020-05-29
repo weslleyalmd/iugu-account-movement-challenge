@@ -5,7 +5,7 @@
 2. Executar o bundle install na raiz do projeto
 3. Para processar as transações, executar o seguinte comando:
 ```
-ruby process_transactions.rb process_transactions.rb path_to_account_file.csv path_to_transaction_file.csv
+ruby process_transactions.rb path_to_account_file.csv path_to_transaction_file.csv
 ```
 
 ## Objetivo
