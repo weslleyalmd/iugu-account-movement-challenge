@@ -19,16 +19,6 @@ class ProcessorTest < Test::Unit::TestCase
     assert_equal @final_csv, final_result
   end
 
-  ### Test if negative balance fine is being applyed
-  def test_process_transaction_negative_balance
-    accounts_negative_balance_file_path = File.expand_path('tests/resources/account_negative_balance.csv')
-    transactions_negative_balance_file_path = File.expand_path('tests/resources/transaction_negative_balance.csv')
-    processor = Processor.new(accounts_negative_balance_file_path, transactions_negative_balance_file_path)
-    processor.process_transactions
-
-    assert_equal -600, processor.accounts.first.balance
-  end
-
   private
 
   def expected_variables
